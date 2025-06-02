@@ -9,113 +9,101 @@
 </head>
 <body>
 
-  <!-- Sidebar expansível -->
-  <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu">
+    <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+      <button class="btn btn-light me-3" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu">☰</button>
+      <a class="navbar-brand fw-bold" href="#">DoaFácil</a>
+      <div class="ms-auto d-flex gap-2">
+        <a href="/Views/Cadastro.html" class="btn btn-outline-light">Cadastre-se</a>
+        <a href="/Views/Doacao.html" class="btn btn-light text-primary">Faça uma Doação</a>
+      </div>
+    </div>
+  </nav>
+
+ <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu">
     <div class="offcanvas-header">
       <h5 class="offcanvas-title">Menu</h5>
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
     </div>
     <div class="offcanvas-body">
       <ul class="nav flex-column">
+        <li class="nav-item"><a class="nav-link" href="/Views/Login.html">Login</a></li>
         <li class="nav-item"><a class="nav-link" href="/Views/index.html">Página Inicial</a></li>
         <li class="nav-item"><a class="nav-link" href="/Views/Cadastro.html">Cadastre-se</a></li>
         <li class="nav-item"><a class="nav-link" href="/Views/Doacao.html">Faça sua doação</a></li>
         <li class="nav-item"><a class="nav-link" href="/Views/ListarDoacao.html">Listar Doações</a></li>
         <li class="nav-item"><a class="nav-link" href="/Views/Contato.html">Contato</a></li>
-      </ul>
+        <li class="nav-item"><a class="nav-link" href="/Views/Conta.html">Minha Conta</a></li>
     </div>
   </div>
 
-  <!-- Cabeçalho -->
-  <header class="d-flex align-items-center justify-content-between p-3 bg-primary text-white">
-    <div class="d-flex align-items-center gap-3">
-      <button class="btn btn-light" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu">☰</button>
-      <h1 class="m-0">Doação de Alimentos</h1>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="display-4 fw-bold">Uma pequena ação pode salvar vidas ❤️</h1>
+      <p class="lead">Faça uma doação e transforme o futuro de alguém.</p>
+      <a href="/Views/Doacao.html" class="btn btn-light btn-lg mt-3">Doe Agora</a>
     </div>
-    <div class="d-flex gap-2">
-      <a href="/Views/Cadastro.html" class="btn btn-outline-light">Cadastre-se</a>
-      <a href="/Views/Doacao.html" class="btn btn-light text-primary">Faça uma Doação</a>
-    </div>
-  </header>
+  </section>
 
-  <!-- Banner -->
-  <div class="banner-faixa">
-    <div id="bannerCarousel" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <a href="/Views/Doacao.html">
-            <img src="/images/image.png" alt="Banner 1">
-          </a>
-        </div>
-        <div class="carousel-item">
-          <a href="/Views/Doacao.html">
-            <img src="/images/Doacao.png" alt="Banner 2">
-          </a>
-        </div>
-        <div class="carousel-item">
-          <a href="/Views/Doacao.html">
-            <img src="/images/DoacaoConciente.png" alt="Banner 3">
-          </a>
+  <!-- Missão e Ação -->
+  <section class="container my-5">
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="bg-white p-4 rounded shadow text-center">
+          <h2 class="text-primary">Nossa Missão</h2>
+          <p>Unimos doadores a ONGs de forma simples, rápida e segura. Toda contribuição pode salvar vidas e alimentar famílias.</p>
+          <p class="text-muted">Doe com o coração. Juntos, somos esperança!</p>
         </div>
       </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon"></span>
-      </button>
-    </div>
-  </div>
-
- <!-- Conteúdo Central -->
-<div class="conteudo-central d-flex" style="margin-right: 20%;">
-  <div class="container-fluid p-4 w-100 d-flex flex-column justify-content-between" style="min-height: calc(100vh - 600px);">
-    
-    <!-- Nossa Missão -->
-    <div class="bg-light p-4 rounded shadow text-center mb-4">
-      <h2 class="text-primary">Nossa Missão</h2>
-      <p>Somos uma plataforma dedicada a combater a fome no Brasil. Unimos doadores a ONGs de forma simples, rápida e segura.</p>
-      <p>Toda contribuição, por menor que pareça, pode salvar vidas e alimentar famílias.</p>
-      <p class="text-muted">Doe com o coração. Juntos, somos esperança!</p>
-    </div>
-
-    <!-- Ajude a Combater a Fome (com mesma formatação) -->
-    <div class="bg-light p-4 rounded shadow text-center">
-      <h2 class="text-primary">Ajude a Combater a Fome</h2>
-      <p>Faça sua parte e ajude quem precisa. Sua doação pode fazer a diferença!</p>
-      <p class="text-muted">Vamos juntos?</p>
-    </div>
-
-  </div>
-</div>
-
-  <!-- Sidebar direita -->
-  <aside class="sidebar-direita">
-    <div class="card mb-3">
-      <div class="card-body">
-        <h5 class="card-title">📢 Novidades</h5>
-        <p class="card-text">Fique por dentro das próximas campanhas e eventos.</p>
+      <div class="col-md-6">
+        <div class="bg-white p-4 rounded shadow text-center">
+          <h2 class="text-primary">Ajude a Combater a Fome</h2>
+          <p>Sua doação faz a diferença na vida de quem mais precisa.</p>
+          <p class="text-muted">Vamos juntos?</p>
+        </div>
       </div>
     </div>
-    <div class="card mb-3">
-      <div class="card-body">
-        <h5 class="card-title">🏅 ONG em Destaque</h5>
-        <p class="card-text">Conheça as ONGs que estão fazendo a diferença.</p>
+  </section>
+
+  <!-- Informações Rápidas -->
+  <section class="container mb-5 info-cards">
+    <div class="row g-4">
+      <div class="col-md-3">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">📢 Novidades</h5>
+            <p class="card-text">Acompanhe campanhas e eventos futuros.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">🏅 ONG em Destaque</h5>
+            <p class="card-text">Conheça ONGs que estão mudando vidas.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">💬 Depoimentos</h5>
+            <p class="card-text"><em>"Sua doação transformou nossa realidade!"</em></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">🌎 Impacto Social</h5>
+            <p class="card-text">Apoie várias regiões com sua doação.</p>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="card mb-3">
-      <div class="card-body">
-        <h5 class="card-title">💬 Depoimentos</h5>
-        <p class="card-text"><em>"Sua doação transformou nossa realidade!"</em></p>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">🌎 Impacto Social</h5>
-        <p class="card-text">Ajudamos diversas regiões com suas doações. Junte-se a essa causa!</p>
-      </div>
-    </div>
-  </aside>
+  </section>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

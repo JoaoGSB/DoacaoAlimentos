@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const tabelaDoacoes = document.getElementById('tabelaDoacoes');
     
-    // Suponhamos que temos um array com doações já registradas (pode ser substituído por uma chamada a um backend)
+    // Exemplo de array de doações
     const doacoes = [
         {
             nome: 'João Silva',
@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
             quantidade: 5,
             ong: 'ONG Esperança',
             vencimento: '2025-04-30',
-            status: 'Pendente', // Status da doação
+            status: 'Pendente',
         },
         {
             nome: 'Maria Oliveira',
@@ -17,9 +17,30 @@ document.addEventListener('DOMContentLoaded', function () {
             quantidade: 3,
             ong: 'Projeto Alimento Solidário',
             vencimento: '2025-04-20',
-            status: 'Entregue', // Status da doação
+            status: 'Entregue',
         }
     ];
+
+    // Função para retornar badge com cor conforme status
+    function gerarBadgeStatus(status) {
+        let corClasse = 'secondary'; // default
+
+        switch (status.toLowerCase()) {
+            case 'pendente':
+                corClasse = 'warning';
+                break;
+            case 'entregue':
+                corClasse = 'success';
+                break;
+            case 'cancelado':
+                corClasse = 'danger';
+                break;
+            default:
+                corClasse = 'secondary';
+        }
+
+        return `<span class="badge bg-${corClasse}">${status}</span>`;
+    }
 
     // Preenche a tabela com as doações
     doacoes.forEach(doacao => {
@@ -31,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <td>${doacao.quantidade}</td>
             <td>${doacao.ong}</td>
             <td>${doacao.vencimento}</td>
-            <td>${doacao.status}</td> <!-- Exibe o status -->
+            <td>${gerarBadgeStatus(doacao.status)}</td>
         `;
         
         tabelaDoacoes.appendChild(tr);
