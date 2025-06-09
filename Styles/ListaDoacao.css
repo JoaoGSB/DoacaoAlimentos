@@ -1,15 +1,73 @@
-body {
-      background-color: #f8f9fa;
-    }
-    .tabela-container {
-      background: #fff;
-      padding: 2rem;
-      border-radius: 15px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    }
-    h2 {
-      margin-top: 2rem;
-      text-align: center;
-      font-weight: bold;
-      color: #0d6efd;
-    }
+/* Container da tabela */
+.tabela-container {
+  background: #fff;
+  border-radius: 18px;
+  padding: 2rem 2rem 1.5rem 2rem;
+  box-shadow: 0 4px 24px rgba(33, 37, 41, 0.08);
+  margin-bottom: 2rem;
+}
+
+/* Título da lista */
+.titulo-lista {
+  font-weight: 700;
+  color: #0d6efd;
+  letter-spacing: 0.5px;
+}
+
+/* Tabela estilizada */
+.tabela-doacoes thead tr {
+  background: #e3f0ff;
+}
+
+.tabela-doacoes thead th {
+  color: #0d6efd;
+  font-weight: 600;
+  border-bottom: 2px solid #b6d4fe;
+}
+
+.tabela-doacoes tbody tr {
+  transition: background 0.2s;
+}
+
+.tabela-doacoes tbody tr:hover {
+  background: #f1f7ff;
+}
+
+.tabela-doacoes td, .tabela-doacoes th {
+  vertical-align: middle;
+  text-align: center;
+}
+
+/* Badge de status */
+.status-badge {
+  font-size: 0.95em;
+  padding: 0.4em 1em;
+  border-radius: 1em;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.status-aprovado {
+  background: #198754;
+  color: #fff;
+}
+
+.status-pendente {
+  background: #ffc107;
+  color: #212529;
+}
+
+.status-recusado {
+  background: #dc3545;
+  color: #fff;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .tabela-container {
+    padding: 1rem 0.5rem;
+  }
+  .titulo-lista {
+    font-size: 1.2rem;
+  }
+}

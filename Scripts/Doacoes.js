@@ -1,4 +1,17 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // Preenche o select de ONGs dinamicamente
+    fetch('/api/ongs')
+        .then(res => res.json())
+        .then(ongs => {
+            const selectOng = document.getElementById('ong');
+            ongs.forEach(ong => {
+                const option = document.createElement('option');
+                option.value = ong.IDong || ong.id || ong.nome;
+                option.textContent = ong.nome;
+                selectOng.appendChild(option);
+            });
+        });
+
     const form = document.getElementById('formDoacao');
     const inputVencimento = document.getElementById('vencimento');
     const errorElement = document.createElement('div');
@@ -8,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
     inputVencimento.parentNode.appendChild(errorElement);
 
     // Adiciona feedback visual
-    inputVencimento.addEventListener('input', function() {
+    inputVencimento.addEventListener('input', function () {
         this.style.borderColor = '';
         errorElement.textContent = '';
     });
@@ -56,16 +69,41 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        // Se tudo estiver válido
+        // Se tudo estiver válido, envia para o backend
         if (isValid) {
-            // Feedback visual
-            form.style.border = '2px solid green';
-            setTimeout(() => {
-                form.style.border = '';
-            }, 2000);
+            // Recupera dados do doador do localStorage
+            const id_doador = localStorage.getItem('conta_id');
+            const nome_doador = localStorage.getItem('conta_nome');
+            const email_doador = localStorage.getItem('conta_email');
 
-            alert("Obrigado pela doação!");
-            form.reset();
+            const data = {
+                alimento: document.getElementById('alimento').value,
+                quantidade: document.getElementById('quantidade').value,
+                tipo: document.getElementById('tipo').value,
+                vencimento: document.getElementById('vencimento').value,
+                id_ong: document.getElementById('ong').value,
+                telefone: document.getElementById('telefone').value,
+                endereco: document.getElementById('endereco').value,
+                observacoes: document.getElementById('observacoes').value,
+                status: 'Pendente',
+                id_doador,
+                nome_doador,
+                email_doador
+            };
+
+            fetch('/api/doacoes/cadastrar', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+                .then(res => res.json())
+                .then(response => {
+                    alert(response.mensagem || "Doação registrada com sucesso!");
+                    form.reset();
+                })
+                .catch(() => {
+                    alert("Erro ao registrar doação.");
+                });
         }
 
         // Função para mostrar erro

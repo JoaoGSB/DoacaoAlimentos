@@ -1,30 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
     const tabelaDoacoes = document.getElementById('tabelaDoacoes');
-    
-    // Exemplo de array de doações
-    const doacoes = [
-        {
-            nome: 'João Silva',
-            alimento: 'Arroz',
-            quantidade: 5,
-            ong: 'ONG Esperança',
-            vencimento: '2025-04-30',
-            status: 'Pendente',
-        },
-        {
-            nome: 'Maria Oliveira',
-            alimento: 'Feijão',
-            quantidade: 3,
-            ong: 'Projeto Alimento Solidário',
-            vencimento: '2025-04-20',
-            status: 'Entregue',
-        }
-    ];
 
     // Função para retornar badge com cor conforme status
     function gerarBadgeStatus(status) {
         let corClasse = 'secondary'; // default
 
+        if (!status) return '';
         switch (status.toLowerCase()) {
             case 'pendente':
                 corClasse = 'warning';
@@ -42,19 +23,22 @@ document.addEventListener('DOMContentLoaded', function () {
         return `<span class="badge bg-${corClasse}">${status}</span>`;
     }
 
-    // Preenche a tabela com as doações
-    doacoes.forEach(doacao => {
-        const tr = document.createElement('tr');
-
-        tr.innerHTML = `
-            <td>${doacao.nome}</td>
-            <td>${doacao.alimento}</td>
-            <td>${doacao.quantidade}</td>
-            <td>${doacao.ong}</td>
-            <td>${doacao.vencimento}</td>
-            <td>${gerarBadgeStatus(doacao.status)}</td>
-        `;
-        
-        tabelaDoacoes.appendChild(tr);
-    });
+    // Busca as doações do backend
+    fetch('/api/doacoes')
+        .then(res => res.json())
+        .then(doacoes => {
+            tabelaDoacoes.innerHTML = '';
+            doacoes.forEach(doacao => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${doacao.nome}</td>
+                    <td>${doacao.alimento}</td>
+                    <td>${doacao.quantidade}</td>
+                    <td>${doacao.ong}</td>
+                    <td>${doacao.vencimento ? new Date(doacao.vencimento).toLocaleDateString() : ''}</td>
+                    <td>${gerarBadgeStatus(doacao.status)}</td>
+                `;
+                tabelaDoacoes.appendChild(tr);
+            });
+        });
 });

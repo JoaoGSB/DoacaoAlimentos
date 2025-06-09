@@ -21,7 +21,7 @@
         <li class="nav-item"><a class="nav-link" href="/Views/Login.html">Login</a></li>
         <li class="nav-item"><a class="nav-link" href="/Views/index.html">Página Inicial</a></li>
         <li class="nav-item"><a class="nav-link" href="/Views/Cadastro.html">Cadastre-se</a></li>
-        <li class="nav-item"><a class="nav-link" href="/Views/Doacao.html">Faça sua doação</a></li>
+        <li class="nav-item"><a class="nav-link" href="/Views/Doacoes.html">Faça sua doação</a></li>
         <li class="nav-item"><a class="nav-link" href="/Views/ListarDoacao.html">Listar Doações</a></li>
         <li class="nav-item"><a class="nav-link" href="/Views/Contato.html">Contato</a></li>
         <li class="nav-item"><a class="nav-link" href="/Views/Conta.html">Minha Conta</a></li>
@@ -40,43 +40,49 @@
   <div class="login-container">
     <h2 class="text-center text-primary mb-4">Login</h2>
 
-    <form id="formLogin">
+    <form id="formLogin" autocomplete="off">
       <div class="mb-3">
         <label for="email" class="form-label">E-mail</label>
-        <input type="email" class="form-control" id="email" required placeholder="seuemail@email.com" />
+        <input type="email" class="form-control" id="email" name="email" required placeholder="seuemail@email.com" />
       </div>
 
       <div class="mb-3">
         <label for="senha" class="form-label">Senha</label>
-        <input type="password" class="form-control" id="senha" required placeholder="********" />
-      </div>
-
-      <div class="mb-3">
-        <label for="tipoUsuario" class="form-label">Tipo de Conta</label>
-        <select class="form-select" id="tipoUsuario" required>
-          <option value="">Selecione</option>
-          <option value="doador">Doador</option>
-          <option value="ong">ONG</option>
-        </select>
+        <input type="password" class="form-control" id="senha" name="senha" required placeholder="********" />
       </div>
 
       <button type="submit" class="btn btn-primary w-100">Entrar</button>
     </form>
+    <div id="loginErro" class="text-danger mt-2"></div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    document.getElementById("formLogin").addEventListener("submit", function (e) {
+    document.getElementById('formLogin').addEventListener('submit', function(e) {
       e.preventDefault();
-      const email = document.getElementById("email").value;
-      const tipoUsuario = document.getElementById("tipoUsuario").value;
-
-      localStorage.setItem("emailUsuario", email);
-      localStorage.setItem("tipoUsuario", tipoUsuario);
-
-      window.location.href = "conta.html";
+      const email = document.getElementById('email').value;
+      const senha = document.getElementById('senha').value;
+      fetch('/api/contas/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, senha })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.id) {
+          localStorage.setItem('conta_id', data.id);
+          localStorage.setItem('conta_tipo', data.tipo);
+          localStorage.setItem('conta_nome', data.nome);   // Salva nome
+          localStorage.setItem('conta_email', data.email); // Salva email
+          window.location.href = '/Views/Conta.html';
+        } else {
+          document.getElementById('loginErro').textContent = data.mensagem || 'Usuário ou senha inválidos!';
+        }
+      })
+      .catch(() => {
+        document.getElementById('loginErro').textContent = 'Erro ao tentar logar. Tente novamente.';
+      });
     });
   </script>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
