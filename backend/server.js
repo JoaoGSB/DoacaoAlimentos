@@ -1,4 +1,5 @@
 console.log('Iniciando servidor...');
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -14,16 +15,14 @@ const doadoresRoutes = require('./routes/doadoresRoutes');
 const ongsRoutes = require('./routes/ongsRoutes');
 const doacaoRoutes = require('./routes/doacoesRoutes');
 const contaRoutes = require('./routes/contaRoutes');
-const contatoApi = require('./Api/contatoApi');
+const contatoRoutes = require('./routes/contatoRoutes');
 
-
-
-app.use(contatoApi);
+// Use as rotas corretamente
 app.use('/api/doadores', doadoresRoutes);
 app.use('/api/ongs', ongsRoutes);
 app.use('/api/doacoes', doacaoRoutes);
 app.use('/api/contas', contaRoutes);
-
+app.use(contatoRoutes); // contatoRoutes já define o caminho '/api/contato'
 
 // Servir arquivos estáticos
 app.use('/Views', express.static(path.join(__dirname, '../Views')));

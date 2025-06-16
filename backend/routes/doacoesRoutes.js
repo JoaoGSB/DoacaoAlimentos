@@ -17,10 +17,7 @@ router.get('/ong/:id', doacoesController.listarPorOng);
 // Confirmar doação (ONG marca como Entregue/Recebida)
 router.put('/:id/confirmar', doacoesController.confirmar);
 
-// Recusar doação (ONG marca como Cancelada)
+// Cancelar doação (ONG ou doador marca como Cancelada)
 router.put('/:id/cancelar', doacoesController.cancelar);
-
-// Cancelar doação pelo doador (opcional)
-router.put('/:id/cancelar-doador', doacoesController.cancelarDoador);
 
 module.exports = router;

@@ -1,5 +1,4 @@
-// controllers/contatoController.js
-require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') });const nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer');
 
 exports.enviarMensagem = async (req, res) => {
   const { nome, email, mensagem } = req.body;

@@ -1,6 +1,8 @@
 const Doacoes = require('../models/doacoesModel');
 const Conta = require('../models/contaModel');
 const Ong = require('../models/ongsModel');
+// const Preferencias = require('../models/preferenciasModel'); // REMOVIDO
+// const { enviarAgradecimento } = require('../utils/notificacoes'); // Se não usar, remova também
 
 // Cadastrar nova doação
 exports.cadastrar = (req, res) => {
@@ -15,47 +17,43 @@ exports.cadastrar = (req, res) => {
       return res.status(500).json({ mensagem: 'Erro ao registrar doação.' });
     }
 
-    // Função auxiliar para buscar dados e preferências
-    function buscarUsuarioComPreferencias(model, id) {
-      return new Promise((resolve) => {
-        model.buscarPorId(id, (err1, results) => {
-          if (err1 || !results || !results[0]) return resolve(null);
-          const usuario = results[0];
-          Preferencias.buscarPorContaId(id, (err2, pref) => {
-            usuario.smsNotificacoes = pref?.sms_notificacoes ?? pref?.smsNotificacoes ?? false;
-            usuario.receberNotificacoes = pref?.receber_notificacoes ?? pref?.receberNotificacoes ?? false;
-            resolve(usuario);
-          });
-        });
-      });
-    }
-
+    // Se não for mais usar preferências, simplifique:
     // Busca doador e ONG em paralelo
-    const doadorPromise = buscarUsuarioComPreferencias(Conta, id_doador);
-    const ongPromise = buscarUsuarioComPreferencias(Ong, id_ong);
+    const doadorPromise = new Promise((resolve) => {
+      Conta.buscarPorId(id_doador, (err1, results) => {
+        if (err1 || !results || !results[0]) return resolve(null);
+        resolve(results[0]);
+      });
+    });
+    const ongPromise = new Promise((resolve) => {
+      Ong.buscarPorId(id_ong, (err1, results) => {
+        if (err1 || !results || !results[0]) return resolve(null);
+        resolve(results[0]);
+      });
+    });
 
     Promise.all([doadorPromise, ongPromise]).then(async ([usuario, ong]) => {
-      // Notificação doador
-      if (usuario) {
-        try {
-          await enviarAgradecimento({ usuario, tipoDoacao: tipo });
-        } catch (erroNotificacao) {
-          console.error('Erro ao enviar notificação ao doador:', erroNotificacao);
-        }
-      }
-      // Notificação ONG
-      if (ong) {
-        ong.nome = ong.nome || ong.razao_social || 'ONG';
-        try {
-          await enviarAgradecimento({
-            usuario: ong,
-            tipoDoacao: tipo || 'alimentos',
-            mensagemPersonalizada: `Parabéns, ${ong.nome}! Você recebeu uma nova doação pelo DoaFácil. Continue fazendo a diferença!`
-          });
-        } catch (erroNotificacao) {
-          console.error('Erro ao enviar notificação à ONG:', erroNotificacao);
-        }
-      }
+      // Notificação doador (remova se não usar)
+      // if (usuario) {
+      //   try {
+      //     await enviarAgradecimento({ usuario, tipoDoacao: tipo });
+      //   } catch (erroNotificacao) {
+      //     console.error('Erro ao enviar notificação ao doador:', erroNotificacao);
+      //   }
+      // }
+      // Notificação ONG (remova se não usar)
+      // if (ong) {
+      //   ong.nome = ong.nome || ong.razao_social || 'ONG';
+      //   try {
+      //     await enviarAgradecimento({
+      //       usuario: ong,
+      //       tipoDoacao: tipo || 'alimentos',
+      //       mensagemPersonalizada: `Parabéns, ${ong.nome}! Você recebeu uma nova doação pelo DoaFácil. Continue fazendo a diferença!`
+      //     });
+      //   } catch (erroNotificacao) {
+      //     console.error('Erro ao enviar notificação à ONG:', erroNotificacao);
+      //   }
+      // }
       // Resposta ao frontend
       res.status(201).json({
         mensagem: 'Doação registrada com sucesso!',
@@ -118,7 +116,7 @@ exports.confirmar = (req, res) => {
   });
 };
 
-// Cancelar doação (ONG)
+// Cancelar doação (ONG ou doador)
 exports.cancelar = (req, res) => {
   const id = req.params.id;
   Doacoes.atualizarStatus(id, 'Cancelada', (err) => {
@@ -126,16 +124,5 @@ exports.cancelar = (req, res) => {
       return res.status(500).json({ mensagem: 'Erro ao cancelar doação.' });
     }
     res.json({ mensagem: 'Doação cancelada com sucesso!' });
-  });
-};
-
-// Cancelar doação pelo doador (opcional)
-exports.cancelarDoador = (req, res) => {
-  const id = req.params.id;
-  Doacoes.atualizarStatus(id, 'Cancelada', (err) => {
-    if (err) {
-      return res.status(500).json({ mensagem: 'Erro ao cancelar doação pelo doador.' });
-    }
-    res.json({ mensagem: 'Doação cancelada pelo doador com sucesso!' });
   });
 };
