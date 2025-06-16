@@ -6,10 +6,11 @@ document.addEventListener('DOMContentLoaded', function () {
   const cnpjInput = document.getElementById('cnpj');
   const labelNome = document.getElementById('labelNome');
   const form = document.getElementById('formCadastro');
+  const mensagemDiv = document.getElementById('mensagemCadastro');
+  const telefoneInput = document.getElementById('telefone');
 
   tipoCadastro.addEventListener('change', function () {
     if (this.value === 'doador') {
-      form.action = '/api/doadores/cadastrar';
       cpfDoador.style.display = 'block';
       cnpjOng.style.display = 'none';
       cpfInput.required = true;
@@ -17,7 +18,6 @@ document.addEventListener('DOMContentLoaded', function () {
       cnpjInput.value = '';
       labelNome.textContent = 'Nome Completo';
     } else if (this.value === 'ong') {
-      form.action = '/api/ongs/cadastrar';
       cpfDoador.style.display = 'none';
       cnpjOng.style.display = 'block';
       cpfInput.required = false;
@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', function () {
       cpfInput.value = '';
       labelNome.textContent = 'Nome da ONG';
     } else {
-      form.action = '';
       cpfDoador.style.display = 'none';
       cnpjOng.style.display = 'none';
       cpfInput.required = false;
@@ -36,17 +35,36 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
+  // Máscara para telefone (formato brasileiro com DDD)
+  telefoneInput.addEventListener('input', function () {
+    let v = this.value.replace(/\D/g, '');
+    if (v.length > 11) v = v.slice(0, 11);
+    if (v.length > 0) v = '(' + v;
+    if (v.length > 3) v = v.slice(0, 3) + ') ' + v.slice(3);
+    if (v.length > 10) v = v.slice(0, 10) + '-' + v.slice(10);
+    this.value = v;
+  });
+
   // Força exibir os campos certos ao recarregar com opção já selecionada
   tipoCadastro.dispatchEvent(new Event('change'));
 
-  // Validação do formulário e envio com redirecionamento
+  // Função para converter telefone para formato internacional (+55)
+  function formatarTelefoneParaInternacional(telefone) {
+    let v = telefone.replace(/\D/g, '');
+    if (v.length === 10 || v.length === 11) {
+      return '+55' + v;
+    }
+    return telefone; // Retorna como está se não bater
+  }
+
+  // Validação do formulário e envio com fetch
   form.addEventListener('submit', function (e) {
-    e.preventDefault(); // evita envio automático
+    e.preventDefault();
 
     const nome = document.getElementById('nome').value.trim();
     const email = document.getElementById('email').value.trim();
     const senha = document.getElementById('senha').value.trim();
-    const telefone = document.getElementById('telefone').value.trim();
+    const telefone = formatarTelefoneParaInternacional(document.getElementById('telefone').value.trim());
     const endereco = document.getElementById('endereco').value.trim();
     const cpf = cpfInput.value.trim();
     const cnpj = cnpjInput.value.trim();
@@ -54,23 +72,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      alert('E-mail inválido!');
+      mensagemDiv.innerHTML = '<div class="alert alert-danger">E-mail inválido!</div>';
       return;
     }
 
     const telefoneNumerico = telefone.replace(/\D/g, '');
-    if (telefoneNumerico.length < 10) {
-      alert('Telefone inválido! Deve conter ao menos 10 números.');
+    if (telefoneNumerico.length < 12) { // +55 + DDD + número = 12 ou 13 dígitos
+      mensagemDiv.innerHTML = '<div class="alert alert-danger">Telefone inválido! Deve conter DDD e número válido.</div>';
       return;
     }
 
     if (tipo === 'doador' && !validarCPF(cpf)) {
-      alert('CPF inválido!');
+      mensagemDiv.innerHTML = '<div class="alert alert-danger">CPF inválido!</div>';
       return;
     }
 
     if (tipo === 'ong' && !validarCNPJ(cnpj)) {
-      alert('CNPJ inválido!');
+      mensagemDiv.innerHTML = '<div class="alert alert-danger">CNPJ inválido!</div>';
       return;
     }
 
@@ -81,26 +99,29 @@ document.addEventListener('DOMContentLoaded', function () {
       senha,
       telefone,
       endereco,
-      tipoCadastro: tipo,
       cpf: tipo === 'doador' ? cpf : undefined,
-      cnpj: tipo === 'ong' ? cnpj : undefined
+      cnpj: tipo === 'ong' ? cnpj : undefined,
+      tipo // Inclua o tipo no corpo da requisição
     };
 
-    fetch(form.action, {
+    const url = '/api/contas';
+
+    fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     })
-      .then(response => {
-        if (!response.ok) throw new Error('Erro no cadastro.');
-        return response.json();
-      })
-      .then(data => {
-        alert(data.mensagem || 'Cadastro realizado com sucesso!');
-        window.location.href = '/Views/Login.html'; // redireciona para login
+      .then(async response => {
+        const resJson = await response.json();
+        if (response.ok) {
+          mensagemDiv.innerHTML = `<div class="alert alert-success">${resJson.mensagem || 'Cadastro realizado com sucesso!'}</div>`;
+          setTimeout(() => { window.location.href = '/Views/Login.html'; }, 2000);
+        } else {
+          mensagemDiv.innerHTML = `<div class="alert alert-danger">${resJson.mensagem || 'Erro ao cadastrar.'}</div>`;
+        }
       })
       .catch(error => {
-        alert('Erro ao cadastrar. Tente novamente.');
+        mensagemDiv.innerHTML = '<div class="alert alert-danger">Erro ao cadastrar. Tente novamente.</div>';
         console.error(error);
       });
   });

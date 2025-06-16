@@ -1,42 +1,62 @@
 const db = require('../db');
 const Doadores = require('../models/doadoresModel');
 
+// Controller para cadastrar um novo doador
 exports.cadastrar = (req, res) => {
-  // Exibe os dados recebidos para depuração
-  console.log('Dados recebidos para cadastro:', req.body);
+  const { nome, email, senha, telefone, endereco, cpf } = req.body;
 
-  Doadores.criar(req.body, (err, result) => {
+  // Primeiro, cria a conta na tabela contas
+  const sqlConta = `
+    INSERT INTO contas (nome, email, senha, tipo, telefone, endereco, cpf)
+    VALUES (?, ?, ?, 'doador', ?, ?, ?)
+  `;
+  db.query(sqlConta, [nome, email, senha, telefone, endereco, cpf], (err, result) => {
     if (err) {
-      console.error('Erro ao cadastrar doador:', err.message || err);
-      return res.status(400).json({ mensagem: err.message || 'Erro ao cadastrar doador.' });
+      console.error('Erro ao criar conta:', err);
+      return res.status(500).json({ mensagem: 'Erro ao criar conta.' });
     }
-    // Pega o ID do novo doador
-    const idDoador = result.insertId;
-    // Salva na tabela contas (agora com todos os campos)
-    const { email, senha, telefone, endereco, cpf, cnpj } = req.body;
-    const sqlConta = `
-      INSERT INTO contas (email, senha, tipo, id_referencia, status, telefone, endereco, cpf, cnpj, criado_em)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
-    `;
-    db.query(
-      sqlConta,
-      [email, senha, 'doador', idDoador, 'ativo', telefone, endereco, cpf || null, cnpj || null],
-      (err2) => {
-        if (err2) {
-          console.error('Erro ao criar conta:', err2);
-          return res.status(500).json({ mensagem: 'Erro ao criar conta.' });
-        }
-        res.status(201).json({ mensagem: 'Cadastro realizado com sucesso! Faça login para continuar.' });
+    const idConta = result.insertId;
+
+    // Agora, cria o doador usando o mesmo id da conta
+    Doadores.criar({
+      id: idConta,
+      nome,
+      email,
+      senha,
+      cpf,
+      telefone,
+      endereco
+    }, (err2) => {
+      if (err2) {
+        console.error('Erro ao cadastrar doador:', err2);
+        return res.status(500).json({ mensagem: 'Erro ao cadastrar doador.' });
       }
-    );
+      res.status(201).json({ mensagem: 'Cadastro realizado com sucesso!', id: idConta });
+    });
   });
 };
 
+// Buscar doador pelo id
+exports.buscarPorId = (req, res) => {
+  const { id } = req.params;
+  Doadores.buscarPorId(id, (err, results) => {
+    if (err) {
+      console.error('Erro ao buscar doador:', err);
+      return res.status(500).json({ mensagem: 'Erro ao buscar doador.' });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ mensagem: 'Doador não encontrado.' });
+    }
+    res.json(results[0]);
+  });
+};
+
+// Listar todos os doadores
 exports.listar = (req, res) => {
   Doadores.listar((err, results) => {
     if (err) {
-      console.error('Erro ao buscar doadores:', err);
-      return res.status(500).send('Erro ao buscar doadores.');
+      console.error('Erro ao listar doadores:', err);
+      return res.status(500).json({ mensagem: 'Erro ao listar doadores.' });
     }
     res.json(results);
   });

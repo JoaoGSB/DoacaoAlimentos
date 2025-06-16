@@ -1,3 +1,4 @@
+console.log('Iniciando servidor...');
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -13,11 +14,16 @@ const doadoresRoutes = require('./routes/doadoresRoutes');
 const ongsRoutes = require('./routes/ongsRoutes');
 const doacaoRoutes = require('./routes/doacoesRoutes');
 const contaRoutes = require('./routes/contaRoutes');
+const contatoApi = require('./Api/contatoApi');
 
+
+
+app.use(contatoApi);
 app.use('/api/doadores', doadoresRoutes);
 app.use('/api/ongs', ongsRoutes);
 app.use('/api/doacoes', doacaoRoutes);
 app.use('/api/contas', contaRoutes);
+
 
 // Servir arquivos estáticos
 app.use('/Views', express.static(path.join(__dirname, '../Views')));
@@ -32,6 +38,8 @@ app.get('/', (req, res) => {
 app.use((req, res) => {
   res.status(404).json({ erro: 'Rota não encontrada' });
 });
+
+console.log('Preparando para escutar na porta', port);
 
 app.listen(port, () => {
   console.log(`✅ Servidor rodando em: http://localhost:${port}`);

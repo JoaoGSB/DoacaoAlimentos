@@ -1,11 +1,11 @@
-// controllers/contaController.js
 const db = require('../db');
 
+// Busca dados completos da conta (inclusive preferências)
 const getContaDados = async (req, res) => {
   const { id } = req.params;
 
   try {
-    // Verifica a conta
+    // Busca todos os dados diretamente da tabela contas
     const [contaResult] = await db.promise().query('SELECT * FROM contas WHERE id = ?', [id]);
 
     if (contaResult.length === 0) {
@@ -13,22 +13,20 @@ const getContaDados = async (req, res) => {
     }
 
     const conta = contaResult[0];
-    let dadosUsuario;
-
-    if (conta.tipo === 'doador') {
-      const [doador] = await db.promise().query('SELECT nome, endereco, celular, fonefixo FROM doadores WHERE IDdoador = ?', [conta.id_referencia]);
-      dadosUsuario = doador[0];
-    } else {
-      const [ong] = await db.promise().query('SELECT nome, endereco, celular, fonefixo FROM ongs WHERE IDong = ?', [conta.id_referencia]);
-      dadosUsuario = ong[0];
-    }
 
     res.json({
+      nome: conta.nome,
       email: conta.email,
       tipo: conta.tipo,
       status: conta.status,
       criado_em: conta.criado_em,
-      ...dadosUsuario
+      telefone: conta.telefone,
+      endereco: conta.endereco,
+      cpf: conta.cpf,
+      cnpj: conta.cnpj,
+      emailNotificacoes: conta.emailNotificacoes || false,
+      smsNotificacoes: conta.smsNotificacoes || false,
+      mostrarDoacoes: conta.mostrarDoacoes || false
     });
 
   } catch (error) {

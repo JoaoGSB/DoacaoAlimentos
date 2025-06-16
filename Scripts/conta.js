@@ -1,3 +1,8 @@
+// Verifica se o usuário está logado
+if (!localStorage.getItem('conta_id')) {
+  window.location.href = '/Views/Login.html';
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   // Recupera id e tipo da conta do localStorage
   const contaId = localStorage.getItem('conta_id');
@@ -24,13 +29,21 @@ document.addEventListener("DOMContentLoaded", () => {
           ? `<strong>CPF:</strong> <span>${conta.cpf}</span>`
           : (conta.cnpj ? `<strong>CNPJ:</strong> <span>${conta.cnpj}</span>` : "");
       });
+
+    document.getElementById('btnSairConta').addEventListener('click', function() {
+      localStorage.removeItem('conta_id');
+      localStorage.removeItem('conta_tipo');
+      localStorage.removeItem('conta_nome');
+      localStorage.removeItem('conta_email');
+      window.location.href = '/Views/Login.html';
+    });
   }
 
   carregarConta();
 
   // Mostrar dados da conta
   document.getElementById("btnVerDados").onclick = () => {
-    document.getElementById("dadosConta").style.display = "block";
+    window.location.href = "/Views/DadosConta.html";
   };
   document.getElementById("btnFecharDados").onclick = () => {
     document.getElementById("dadosConta").style.display = "none";
@@ -41,9 +54,13 @@ document.addEventListener("DOMContentLoaded", () => {
     alert("Funcionalidade de alteração de senha em breve!");
   };
 
-  // Redireciona para a página de listagem de doações e define o título conforme o tipo
+  // Redireciona para a página de doações correta conforme o tipo de conta
   document.getElementById("btnVerDoacoes").onclick = () => {
     const contaTipo = localStorage.getItem('conta_tipo');
-    window.location.href = `/Views/ListarDoacao.html?tipo=${contaTipo}`;
+    if (contaTipo === 'ong') {
+      window.location.href = "/Views/doacoesRecebidas.html";
+    } else {
+      window.location.href = `/Views/ListarDoacao.html?tipo=${contaTipo}`;
+    }
   };
 });

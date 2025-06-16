@@ -3,89 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Faça sua Doação</title>
-    <link rel="stylesheet" href="/Styles/style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Faça sua Doação - DoaFácil</title>
+    <link rel="stylesheet" href="/Styles/index.css" />
+    <link rel="stylesheet" href="/Styles/Doacoes.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Sidebar expansível -->
-  <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu">
-    <div class="offcanvas-header">
-      <h5 class="offcanvas-title">Menu</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
-    </div>
-    <div class="offcanvas-body">
-      <ul class="nav flex-column">
-        <li class="nav-item"><a class="nav-link" href="/Views/Login.html">Login</a></li>
-        <li class="nav-item"><a class="nav-link" href="/Views/index.html">Página Inicial</a></li>
-        <li class="nav-item"><a class="nav-link" href="/Views/Cadastro.html">Cadastre-se</a></li>
-        <li class="nav-item"><a class="nav-link" href="/Views/Doacoes.html">Faça sua doação</a></li>
-        <li class="nav-item"><a class="nav-link" href="/Views/ListarDoacao.html">Listar Doações</a></li>
-        <li class="nav-item"><a class="nav-link" href="/Views/Contato.html">Contato</a></li>
-        <li class="nav-item"><a class="nav-link" href="/Views/Conta.html">Minha Conta</a></li>
-      </ul>
+<!-- Sidebar Menu -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu">
+  <div class="offcanvas-header bg-primary text-white">
+    <h5 class="offcanvas-title">
+      <i class="fas fa-hands-helping me-2"></i>DoaFácil
+    </h5>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body">
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a class="nav-link" href="/Views/Login.html" id="sidebarEntrar">
+          <i class="fas fa-sign-in-alt me-2"></i>Login
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="/Views/index.html">
+          <i class="fas fa-home me-2"></i>Página Inicial
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/Views/Cadastro.html" id="sidebarCadastro">
+          <i class="fas fa-user-plus me-2"></i>Cadastre-se
+        </a>
+      </li>
+      <!-- Botão só para doador -->
+      <li class="nav-item" id="itemFazerDoacao" style="display:none;">
+        <a class="nav-link" href="/Views/Doacoes.html">
+          <i class="fas fa-heart me-2"></i>Faça sua doação
+        </a>
+      </li>
+      <!-- Botão de doações dinâmico -->
+      <li class="nav-item">
+        <a class="nav-link" id="menuDoacoes" href="/Views/ListarDoacao.html">
+          <i class="fas fa-list me-2"></i>
+          <span id="textoMenuDoacoes">Doações</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/Views/Contato.html">
+          <i class="fas fa-envelope me-2"></i>Contato
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/Views/Conta.html">
+          <i class="fas fa-user-circle me-2"></i>Minha Conta
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+ <!-- Navbar dinâmica -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+  <div class="container">
+    <button class="btn btn-light me-3" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu">
+      <i class="fas fa-bars"></i>
+    </button>
+    <a class="navbar-brand fw-bold" href="#">
+      <i class="fas fa-hands-helping me-2"></i>DoaFácil
+    </a>
+    <div class="ms-auto d-flex gap-2 align-items-center" id="navbarUserArea">
+      <a href="/Views/Cadastro.html" class="btn btn-outline-light" id="btnCadastro">
+        <i class="fas fa-user-plus me-1"></i> Cadastre-se
+      </a>
+      <a href="/Views/Login.html" class="btn btn-outline-light" id="btnEntrar">
+        <i class="fas fa-user-plus me-1"></i> Entrar
+      </a>
+      <a href="/Views/doacoes.html" class="btn btn-light text-primary fw-bold" id="btnDoarAgora">
+        <i class="fas fa-heart me-1"></i> Doar Agora 
+      </a>
+      <!-- Avatar e nome do usuário logado -->
+      <div id="navbarConta" style="display:none; cursor:pointer;" class="d-flex align-items-center">
+        <span class="me-2 d-none d-sm-inline text-white">
+          Bem-vindo, <span id="navbarNomeUsuario" class="fw-semibold text-white"></span>
+        </span>
+        <div id="navbarAvatar"
+          class="rounded-circle border border-2 border-white bg-secondary text-white d-flex align-items-center justify-content-center"
+          style="width:40px; height:40px; font-size:1.2rem; font-weight:bold; text-transform:uppercase; overflow:hidden;">
+        </div>
+      </div>
     </div>
   </div>
-  <!-- Cabeçalho -->
-  <header class="d-flex align-items-center justify-content-between p-3 bg-primary text-white">
-    <button class="btn btn-light" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu">
-      ☰
-    </button>
-    <h1 class="m-0">Doação de Alimentos</h1>
-  </header>
+</nav>
+
   <!-- Conteúdo principal -->
   <div class="conteudo">
-    <div class="form-doacao">
-      <h3>Faça sua Doação</h3>
-      <form id="formDoacao" class="row g-3" action="/api/doacoes/cadastrar" method="post">
-        <div class="col-12">
-          <label for="alimento" class="form-label">Alimento a ser doado</label>
-          <input type="text" class="form-control" id="alimento" name="alimento" required>
+    <div class="form-doacao-container">
+      <div class="form-doacao">
+        <h3><i class="fas fa-heart text-danger me-2"></i> Faça sua Doação</h3>
+        
+        <div class="info-section">
+          <h5><i class="fas fa-info-circle text-primary me-2"></i> Importante</h5>
+          <p>Sua doação pode ajudar muitas pessoas. Por favor, preencha todos os campos obrigatórios para que possamos processar sua doação.</p>
         </div>
-        <div class="col-md-6">
-          <label for="quantidade" class="form-label">Quantidade</label>
-          <input type="number" class="form-control" id="quantidade" name="quantidade" min="1" required>
-        </div>
-        <div class="col-md-6">
-          <label for="tipo" class="form-label">Tipo de Alimento</label>
-          <select id="tipo" class="form-select" name="tipo" required>
-            <option selected disabled value="">Selecione o tipo</option>
-            <option>Seco</option>
-            <option>Perecível</option>
-            <option>Outro</option>
-          </select>
-        </div>
-        <div class="col-md-6">
-          <label for="vencimento" class="form-label">Data de vencimento do alimento</label>
-          <input type="date" class="form-control" id="vencimento" name="vencimento" required>
-        </div>
-        <div class="col-md-6">
-          <label for="ong" class="form-label">Escolha a ONG</label>
-          <select id="ong" class="form-select" name="ong" required>
-            <option selected disabled value="">Selecione uma ONG</option>
-            <!-- ONGs serão carregadas via JS -->
-          </select>
-        </div>
-        <div class="col-12">
-          <label for="telefone" class="form-label">Telefone para contato</label>
-          <input type="tel" class="form-control" id="telefone" name="telefone" placeholder="(99) 99999-9999">
-        </div>
-        <div class="col-12">
-          <label for="endereco" class="form-label">Endereço para retirada (opcional)</label>
-          <input type="text" class="form-control" id="endereco" name="endereco" placeholder="Rua, número, bairro, cidade">
-        </div>
-        <div class="col-12">
-          <label for="observacoes" class="form-label">Observações</label>
-          <textarea class="form-control" id="observacoes" name="observacoes" rows="2" placeholder="Alguma informação extra?"></textarea>
-        </div>
-        <div class="col-12">
-          <button type="submit" class="btn btn-success">Enviar Doação</button>
-        </div>
-      </form>
+        
+        <form id="formDoacao" class="row g-3" action="/api/doacoes/cadastrar" method="post">
+          <div class="col-12">
+            <label for="alimento" class="form-label">Alimento a ser doado <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="alimento" name="alimento" placeholder="Ex: Arroz, Feijão, Óleo de soja" required>
+          </div>
+          
+          <div class="col-md-6">
+            <label for="quantidade" class="form-label">Quantidade <span class="text-danger">*</span></label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="quantidade" name="quantidade" min="1" placeholder="Ex: 5" required>
+              <span class="input-group-text">unidades</span>
+            </div>
+          </div>
+          
+          <div class="col-md-6">
+            <label for="tipo" class="form-label">Tipo de Alimento <span class="text-danger">*</span></label>
+            <select id="tipo" class="form-select" name="tipo" required>
+              <option selected disabled value="">Selecione o tipo</option>
+              <option>Alimento Seco (arroz, feijão, etc.)</option>
+              <option>Alimento Perecível (frutas, legumes, etc.)</option>
+              <option>Alimento Industrializado (enlatados, etc.)</option>
+              <option>Outro</option>
+            </select>
+          </div>
+          
+          <div class="col-md-6">
+            <label for="vencimento" class="form-label">Data de vencimento <span class="text-danger">*</span></label>
+            <input type="date" class="form-control" id="vencimento" name="vencimento" required>
+          </div>
+          
+          <div class="col-md-6">
+            <label for="ong" class="form-label">ONG beneficiada <span class="text-danger">*</span></label>
+            <select id="ong" class="form-select" name="ong" required>
+              <option selected disabled value="">Selecione uma ONG</option>
+              <option>Banco de Alimentos São Paulo</option>
+              <option>Casa do Caminho</option>
+              <option>Mesa Brasil SESC</option>
+              <option>Instituto Stop Hunger</option>
+              <option>Outra</option>
+            </select>
+          </div>
+          
+          <div class="col-12">
+            <label for="telefone" class="form-label">Telefone para contato <span class="text-danger">*</span></label>
+            <input type="tel" class="form-control" id="telefone" name="telefone" placeholder="(99) 99999-9999" required>
+          </div>
+          
+          <div class="col-12">
+            <label for="endereco" class="form-label">Endereço para retirada</label>
+            <input type="text" class="form-control" id="endereco" name="endereco" placeholder="Rua, número, bairro, cidade">
+            <small class="text-muted">Opcional - informe se deseja que a ONG retire em seu endereço</small>
+          </div>
+          
+          <div class="col-12">
+            <label for="observacoes" class="form-label">Observações</label>
+            <textarea class="form-control" id="observacoes" name="observacoes" rows="3" placeholder="Alguma informação adicional sobre a doação?"></textarea>
+          </div>
+          
+          <div class="col-12 mt-4">
+            <button type="submit" class="btn btn-doar">
+              <i class="fas fa-paper-plane me-2"></i> Enviar Doação
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/Scripts/Doacoes.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/Scripts/Doacoes.js"></script>
+  <script src="/Scripts/sidebar.js"></script>
 </body>
 </html>
