@@ -1,0 +1,137 @@
+/* Estilos para a página de listagem de doações */
+body {
+  background-color: #f8f9fa;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Cabeçalho */
+header {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 1rem 0;
+}
+
+/* Container principal */
+.container {
+  max-width: 1200px;
+  margin-top: 2rem;
+}
+
+/* Título da página */
+.titulo-lista {
+  color: #2c3e50;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.titulo-lista::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background-color: #e74c3c;
+}
+
+/* Container da tabela */
+.tabela-container {
+  background-color: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Cabeçalho da tabela */
+.tabela-doacoes thead th {
+  background-color: #f1f5f9;
+  color: #2c3e50;
+  font-weight: 600;
+  border-bottom: 2px solid #dee2e6;
+  padding: 1rem;
+}
+
+/* Linhas da tabela */
+.tabela-doacoes tbody tr {
+  transition: all 0.2s ease;
+}
+
+.tabela-doacoes tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+/* Células da tabela */
+.tabela-doacoes td {
+  padding: 1rem;
+  vertical-align: middle;
+  border-top: 1px solid #f1f5f9;
+}
+
+/* Botão de nova doação */
+.btn-nova-doacao {
+  background-color: #e74c3c;
+  border: none;
+  padding: 0.5rem 1.25rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-nova-doacao:hover {
+  background-color: #c0392b;
+  transform: translateY(-2px);
+}
+
+/* Status das doações */
+.badge {
+  padding: 0.5rem 0.75rem;
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+
+.badge-entregue {
+  background-color: #2ecc71 !important; /* verde */
+  color: #fff !important;
+}
+
+.badge-pendente {
+  background-color: #f39c12 !important; /* amarelo */
+  color: #212529 !important;
+}
+
+.badge-cancelada {
+  background-color: #e74c3c !important; /* vermelho */
+  color: #fff !important;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .tabela-container {
+    padding: 1rem;
+  }
+  
+  .tabela-doacoes thead {
+    display: none;
+  }
+  
+  .tabela-doacoes tbody tr {
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+  }
+  
+  .tabela-doacoes tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: none;
+  }
+  
+  .tabela-doacoes tbody td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #2c3e50;
+    margin-right: 1rem;
+  }
+}

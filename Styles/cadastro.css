@@ -1,0 +1,33 @@
+
+    .input-borda-preta {
+      border: 2px solid #000 !important;
+      box-shadow: none !important;
+    }
+    .cadastro-container {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      padding: 32px 24px;
+    }
+    .cadastro-container h2 {
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    .cadastro-container form label {
+      font-weight: 500;
+    }
+    .cadastro-container .btn-primary {
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+    .cadastro-container .text-center.mt-3 {
+      margin-top: 2rem !important;
+      font-size: 1rem;
+    }
+    .cadastro-container a {
+      transition: color 0.2s;
+    }
+    .cadastro-container a:hover {
+      color: #0056b3;
+      text-decoration: underline;
+    }

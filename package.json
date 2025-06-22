@@ -1,0 +1,30 @@
+{
+  "name": "doacaoalimentos",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoaoGSB/DoacaoAlimentos.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JoaoGSB/DoacaoAlimentos/issues"
+  },
+  "homepage": "https://github.com/JoaoGSB/DoacaoAlimentos#readme",
+  "description": "",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.1",
+    "nodemailer": "^7.0.3",
+    "twilio": "^5.7.1"
+  }
+}
