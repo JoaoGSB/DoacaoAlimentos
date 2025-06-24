@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/Styles/DadosConta.css">
 </head>
 <body>
-    <!-- Sidebar Menu -->
+<!-- Sidebar Menu -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu">
   <div class="offcanvas-header bg-primary text-white">
     <h5 class="offcanvas-title">
@@ -34,13 +34,11 @@
           <i class="fas fa-user-plus me-2"></i>Cadastre-se
         </a>
       </li>
-      <!-- Botão só para doador -->
       <li class="nav-item" id="itemFazerDoacao" style="display:none;">
         <a class="nav-link" href="/Views/Doacoes.html">
           <i class="fas fa-heart me-2"></i>Faça sua doação
         </a>
       </li>
-      <!-- Botão de doações dinâmico -->
       <li class="nav-item">
         <a class="nav-link" id="menuDoacoes" href="/Views/ListarDoacao.html">
           <i class="fas fa-list me-2"></i>
@@ -60,63 +58,65 @@
     </ul>
   </div>
 </div>
-    <div class="account-container">
-        <div class="account-header">
-            <h1><i class="fas fa-user-cog me-2"></i>Configurações da Conta</h1>
-            <p class="text-muted">Gerencie suas informações pessoais, segurança e preferências</p>
-        </div>
+<div class="account-container">
+    <div class="account-header">
+        <h1><i class="fas fa-user-cog me-2"></i>Configurações da Conta</h1>
+        <p class="text-muted">Gerencie suas informações pessoais, segurança e preferências</p>
+    </div>
 
-        <div class="account-section">
-            <div class="section-header">
-                <h2><i class="fas fa-id-card me-2"></i>Informações Pessoais</h2>
+    <div id="mensagemConta"></div>
+
+    <div class="account-section">
+        <div class="section-header">
+            <h2><i class="fas fa-id-card me-2"></i>Informações Pessoais</h2>
+        </div>
+        <form id="formConta" class="account-form">
+            <div class="mb-3">
+                <label for="nome" class="form-label">Nome Completo</label>
+                <input type="text" class="form-control" id="nome" disabled>
             </div>
-            <form id="formConta" class="account-form">
-                <div class="mb-3">
-                    <label for="nome" class="form-label">Nome Completo</label>
-                    <input type="text" class="form-control" id="nome" disabled>
-                </div>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Endereço de E-mail</label>
-                    <input type="email" class="form-control" id="email" disabled>
-                </div>
-                <div class="mb-3">
-                    <label for="telefone" class="form-label">Telefone</label>
-                    <input type="text" class="form-control" id="telefone">
-                </div>
-                <div class="mb-3">
-                    <label for="endereco" class="form-label">Endereço</label>
-                    <input type="text" class="form-control" id="endereco">
-                </div>
-                <button type="button" id="btnSalvar" class="btn btn-primary">
-                    <i class="fas fa-save me-2"></i>Salvar Alterações
-                </button>
-            </form>
-        </div>
-
-        <div class="account-section">
-            <div class="section-header">
-                <h2><i class="fas fa-lock me-2"></i>Segurança</h2>
+            <div class="mb-3">
+                <label for="email" class="form-label">Endereço de E-mail</label>
+                <input type="email" class="form-control" id="email" disabled>
             </div>
-            <form id="formSenha" class="account-form">
-                <div class="mb-3">
-                    <label for="senhaAtual" class="form-label">Senha Atual</label>
-                    <input type="password" class="form-control" id="senhaAtual">
-                </div>
-                <div class="mb-3">
-                    <label for="novaSenha" class="form-label">Nova Senha</label>
-                    <input type="password" class="form-control" id="novaSenha">
-                    <div class="form-text">Mínimo de 8 caracteres, incluindo números e letras</div>
-                </div>
-                <button type="button" id="btnAlterarSenha" class="btn btn-primary">
-                    <i class="fas fa-key me-2"></i>Alterar Senha
-                </button>
-            </form>
+            <div class="mb-3">
+                <label for="telefone" class="form-label">Telefone</label>
+                <input type="text" class="form-control" id="telefone">
+            </div>
+            <div class="mb-3">
+                <label for="endereco" class="form-label">Endereço</label>
+                <input type="text" class="form-control" id="endereco">
+            </div>
+            <button type="button" id="btnSalvar" class="btn btn-primary">
+                <i class="fas fa-save me-2"></i>Salvar Alterações
+            </button>
+        </form>
+    </div>
+
+    <div class="account-section">
+        <div class="section-header">
+            <h2><i class="fas fa-lock me-2"></i>Segurança</h2>
         </div>
+        <form id="formSenha" class="account-form">
+            <div class="mb-3">
+                <label for="senhaAtual" class="form-label">Senha Atual</label>
+                <input type="password" class="form-control" id="senhaAtual">
+            </div>
+            <div class="mb-3">
+                <label for="novaSenha" class="form-label">Nova Senha</label>
+                <input type="password" class="form-control" id="novaSenha">
+                <div class="form-text">Mínimo de 8 caracteres, incluindo números e letras</div>
+            </div>
+            <button type="button" id="btnAlterarSenha" class="btn btn-primary">
+                <i class="fas fa-key me-2"></i>Alterar Senha
+            </button>
+            <div id="mensagemSenha" class="mt-2"></div>
+        </form>
+    </div>
+</div>
 
-     
-
-    <script src="/Scripts/DadosConta.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/Scripts/DadosConta.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/Scripts/sidebar.js"></script>
 <script src="/Scripts/notificações.js"></script>
 </body>

@@ -49,11 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("dadosConta").style.display = "none";
   };
 
-  // Alterar senha (implemente depois)
-  document.getElementById("btnAlterarSenha").onclick = () => {
-    alert("Funcionalidade de alteração de senha em breve!");
-  };
-
   // Redireciona para a página de doações correta conforme o tipo de conta
   document.getElementById("btnVerDoacoes").onclick = () => {
     const contaTipo = localStorage.getItem('conta_tipo');

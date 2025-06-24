@@ -1,8 +1,7 @@
 const Doacoes = require('../models/doacoesModel');
 const Conta = require('../models/contaModel');
 const Ong = require('../models/ongsModel');
-// const Preferencias = require('../models/preferenciasModel'); // REMOVIDO
-// const { enviarAgradecimento } = require('../utils/notificacoes'); // Se não usar, remova também
+
 
 // Cadastrar nova doação
 exports.cadastrar = (req, res) => {
@@ -32,28 +31,7 @@ exports.cadastrar = (req, res) => {
       });
     });
 
-    Promise.all([doadorPromise, ongPromise]).then(async ([usuario, ong]) => {
-      // Notificação doador (remova se não usar)
-      // if (usuario) {
-      //   try {
-      //     await enviarAgradecimento({ usuario, tipoDoacao: tipo });
-      //   } catch (erroNotificacao) {
-      //     console.error('Erro ao enviar notificação ao doador:', erroNotificacao);
-      //   }
-      // }
-      // Notificação ONG (remova se não usar)
-      // if (ong) {
-      //   ong.nome = ong.nome || ong.razao_social || 'ONG';
-      //   try {
-      //     await enviarAgradecimento({
-      //       usuario: ong,
-      //       tipoDoacao: tipo || 'alimentos',
-      //       mensagemPersonalizada: `Parabéns, ${ong.nome}! Você recebeu uma nova doação pelo DoaFácil. Continue fazendo a diferença!`
-      //     });
-      //   } catch (erroNotificacao) {
-      //     console.error('Erro ao enviar notificação à ONG:', erroNotificacao);
-      //   }
-      // }
+    Promise.all([doadorPromise, ongPromise]).then(async ([usuario]) => {
       // Resposta ao frontend
       res.status(201).json({
         mensagem: 'Doação registrada com sucesso!',
